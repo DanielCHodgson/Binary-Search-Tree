@@ -66,6 +66,19 @@ class Tree {
     return curr;
   }
 
+  find(value) {
+    return this.#findRec(this.#root, value);
+  }
+
+  #findRec(node, value) {
+    if (node === null) return null;
+    const nodeValue = node.getValue();
+
+    if (value === nodeValue) return node;
+    if (value < nodeValue) return this.#findRec(node.getLeft(), value);
+    if (value > nodeValue) return this.#findRec(node.getRight(), value);
+  }
+
   getRoot() {
     return this.#root;
   }
@@ -145,7 +158,16 @@ myTree.delete(30);
 myTree.delete(10);
 prettyPrint(rootNode);
 
-console.log("deleting: 5");
+console.log("searching: 5");
+console.log(`myTree.find(5)`);
 
+console.log("deleting: 5");
 myTree.delete(5);
-prettyPrint(rootNode);
+
+
+console.log("searching: 5");
+console.log(myTree.find(5));
+
+
+
+
