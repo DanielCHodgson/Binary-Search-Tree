@@ -19,15 +19,35 @@ class Tree {
     return root;
   }
 
+  insert(value) {
+    this.#root = this.#insertRec(this.#root, value);
+  }
+
+  #insertRec(node, value) {
+    if (node === null) {
+      return new Node(value);
+    }
+
+    if (value < node.getValue()) {
+      node.setLeft(this.#insertRec(node.getLeft(), value));
+    } else if (value > node.getValue()) {
+      node.setRight(this.#insertRec(node.getRight(), value));
+    }
+
+    return node;
+  }
+
+  delete(value) {}
+
   getRoot() {
     return this.#root;
   }
 }
 
 class Node {
-  #value;
-  #left;
-  #right;
+  #value = null;
+  #left = null;
+  #right = null;
 
   constructor(value) {
     this.#value = value;
@@ -68,4 +88,11 @@ function prettyPrint(node, prefix = "", isLeft = true) {
 
 const myTree = new Tree([7, 3, 9, 1, 5, 3, 7, 2, 8]);
 const rootNode = myTree.getRoot();
+prettyPrint(rootNode);
+
+console.log("inserting: 20, 30, 40");
+
+myTree.insert(20);
+myTree.insert(30);
+myTree.insert(10);
 prettyPrint(rootNode);
