@@ -37,7 +37,34 @@ class Tree {
     return node;
   }
 
-  delete(value) {}
+  delete(value) {
+    this.#root = this.#deleteRec(this.#root, value);
+  }
+
+  #deleteRec(node, value) {
+    if (node === null) return null;
+
+    if (value < node.getValue()) {
+      node.setLeft(this.#deleteRec(node.getLeft(), value));
+    } else if (value > node.getValue()) {
+      node.setRight(this.#deleteRec(node.getRight(), value));
+    } else {
+      if (node.getLeft() === null) return node.getRight();
+      if (node.getRight() === null) return node.getLeft();
+
+      const succ = this.#getSuccessor(node);
+      node.setValue(succ.getValue());
+      node.setRight(this.#deleteRec(node.getRight(), succ.getValue()));
+    }
+
+    return node;
+  }
+
+  #getSuccessor(node) {
+    let curr = node.getRight();
+    while (curr.getLeft() !== null) curr = curr.getLeft();
+    return curr;
+  }
 
   getRoot() {
     return this.#root;
@@ -48,6 +75,7 @@ class Node {
   #value = null;
   #left = null;
   #right = null;
+  #height = 1;
 
   constructor(value) {
     this.#value = value;
@@ -57,11 +85,24 @@ class Node {
     return this.#value;
   }
 
+  getHeight() {
+    return this.#height;
+  }
+
   getLeft() {
     return this.#left;
   }
+
   getRight() {
     return this.#right;
+  }
+
+  setValue(value) {
+    this.#value = value;
+  }
+
+  setHeight(height) {
+    this.#height = height;
   }
 
   setLeft(node) {
@@ -95,4 +136,16 @@ console.log("inserting: 20, 30, 40");
 myTree.insert(20);
 myTree.insert(30);
 myTree.insert(10);
+prettyPrint(rootNode);
+
+console.log("deleting: 20, 30, 40");
+
+myTree.delete(20);
+myTree.delete(30);
+myTree.delete(10);
+prettyPrint(rootNode);
+
+console.log("deleting: 5");
+
+myTree.delete(5);
 prettyPrint(rootNode);
