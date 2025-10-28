@@ -80,6 +80,7 @@ class Tree {
   }
 
   levelOrderForEach(callback) {
+    if (!callback) throw new Error("callback required");
     if (this.#root === null) return [];
 
     const queue = [this.#root];
