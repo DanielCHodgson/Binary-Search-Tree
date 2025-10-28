@@ -260,34 +260,18 @@ function prettyPrint(node, prefix = "", isLeft = true) {
   }
 }
 
-const myTree = new Tree([7, 3, 9, 1, 5, 3, 7, 2, 8]);
-const rootNode = myTree.getRoot();
-prettyPrint(rootNode);
+const nums = [];
 
-console.log("inserting: 20, 30, 40");
+for (let i = 1; i < 25; i++) {
+  let randomNum = Math.floor(Math.random() * 100) + 1;
+  nums.push(randomNum);
+}
 
-myTree.insert(20);
-myTree.insert(30);
-myTree.insert(10);
-prettyPrint(rootNode);
-
-console.log("deleting: 20, 30, 40");
-
-myTree.delete(20);
-myTree.delete(30);
-myTree.delete(10);
-prettyPrint(rootNode);
-
-console.log("searching: 5");
-console.log(myTree.find(5));
-
-console.log("deleting: 5");
-myTree.delete(5);
-
-console.log("searching: 5");
-console.log(myTree.find(5));
-
-prettyPrint(rootNode);
+console.log(
+  "Creating tree with 25 random entries with values between 1 and 100"
+);
+const myTree = new Tree(nums);
+prettyPrint(myTree.getRoot());
 
 console.log("levelOrderForEach test:");
 console.log(myTree.levelOrderForEach((node) => node.getValue()));
@@ -301,26 +285,21 @@ console.log(myTree.inOrderForEach((node) => node.getValue()));
 console.log("postOrderForEach test:");
 console.log(myTree.postOrderForEach((node) => node.getValue()));
 
-console.log("Height of 9: " + myTree.height(9));
-console.log("Height of 7: " + myTree.height(7));
-
-console.log("Depth of 9: " + myTree.depth(9));
-console.log("Depth of 7: " + myTree.depth(7));
-
-console.log("Is balanced:", myTree.isBalanced());
-
-console.log("Inserting: 50, 60, 70")
-myTree.insert(50);
-myTree.insert(60);
-myTree.insert(70);
-
+console.log(
+  "Unbalancing tree by adding: 100, 200, 300, 400, 500, 600, 700, 800, 900"
+);
+myTree.insert(100);
+myTree.insert(200);
+myTree.insert(400);
+myTree.insert(500);
+myTree.insert(500);
+myTree.insert(600);
+myTree.insert(700);
+myTree.insert(800);
+myTree.insert(900);
 prettyPrint(myTree.getRoot());
-
-console.log("Is balanced after insertions:", myTree.isBalanced());
-
-
-console.log("Rebalancing")
+console.log("Is balanced? " + myTree.isBalanced());
+console.log("Rebalancing");
 myTree.rebalance();
-
-console.log("Is balanced after rebalance:", myTree.isBalanced());
 prettyPrint(myTree.getRoot());
+console.log("Is balanced? " + myTree.isBalanced());
