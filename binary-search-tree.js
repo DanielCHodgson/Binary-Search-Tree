@@ -16,6 +16,8 @@ class Tree {
     root.setLeft(this.buildTree(array, start, mid - 1));
     root.setRight(this.buildTree(array, mid + 1, end));
 
+    this.#updateHeight(root);
+
     return root;
   }
 
@@ -34,6 +36,7 @@ class Tree {
       node.setRight(this.#insertRec(node.getRight(), value));
     }
 
+    this.#updateHeight(node);
     return node;
   }
 
@@ -57,6 +60,7 @@ class Tree {
       node.setRight(this.#deleteRec(node.getRight(), succ.getValue()));
     }
 
+    this.#updateHeight(node);
     return node;
   }
 
@@ -135,6 +139,18 @@ class Tree {
     result.push(callback(node));
   }
 
+  height(value) {
+    const node = this.find(value);
+    if (!node) return null;
+    return node.getHeight();
+  }
+
+  #updateHeight(node) {
+    const leftHeight = node.getLeft() ? node.getLeft().getHeight() : -1;
+    const rightHeight = node.getRight() ? node.getRight().getHeight() : -1;
+    node.setHeight(Math.max(leftHeight, rightHeight) + 1);
+  }
+
   getRoot() {
     return this.#root;
   }
@@ -144,7 +160,7 @@ class Node {
   #value = null;
   #left = null;
   #right = null;
-  #height = 1;
+  #height = 0;
 
   constructor(value) {
     this.#value = value;
@@ -236,3 +252,6 @@ console.log(myTree.inOrderForEach((node) => node.getValue()));
 
 console.log("postOrderForEach test:");
 console.log(myTree.postOrderForEach((node) => node.getValue()));
+
+console.log("Height of 9: " + myTree.height(9))
+console.log("Height of 7: " + myTree.height(7))
