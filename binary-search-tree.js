@@ -79,6 +79,22 @@ class Tree {
     if (value > nodeValue) return this.#findRec(node.getRight(), value);
   }
 
+  levelOrderForEach(callback) {
+    if (this.#root === null) return [];
+
+    const queue = [this.#root];
+    const result = [];
+
+    while (queue.length > 0) {
+      const currNode = queue.shift();
+      result.push(callback(currNode));
+      if (currNode.getLeft()) queue.push(currNode.getLeft());
+      if (currNode.getRight()) queue.push(currNode.getRight());
+    }
+
+    return result;
+  }
+
   getRoot() {
     return this.#root;
   }
@@ -164,10 +180,8 @@ console.log(`myTree.find(5)`);
 console.log("deleting: 5");
 myTree.delete(5);
 
-
 console.log("searching: 5");
 console.log(myTree.find(5));
 
-
-
-
+console.log("levelOrderForEach test:");
+console.log(myTree.levelOrderForEach((node) => node.getValue()));
