@@ -96,6 +96,45 @@ class Tree {
     return result;
   }
 
+  preOrderForEach(callback) {
+    const result = [];
+    this.#preOrderForEachRec(this.#root, callback, result);
+    return result;
+  }
+
+  #preOrderForEachRec(node, callback, result) {
+    if (node === null) return;
+    result.push(callback(node));
+    this.#preOrderForEachRec(node.getLeft(), callback, result);
+    this.#preOrderForEachRec(node.getRight(), callback, result);
+  }
+
+  inOrderForEach(callback) {
+    const result = [];
+    this.#inOrderForEachRec(this.#root, callback, result);
+    return result;
+  }
+
+  #inOrderForEachRec(node, callback, result) {
+    if (node === null) return;
+    this.#inOrderForEachRec(node.getLeft(), callback, result);
+    result.push(callback(node));
+    this.#inOrderForEachRec(node.getRight(), callback, result);
+  }
+
+  postOrderForEach(callback) {
+    const result = [];
+    this.#postOrderForEachRec(this.#root, callback, result);
+    return result;
+  }
+
+  #postOrderForEachRec(node, callback, result) {
+    if (node === null) return;
+    this.#postOrderForEachRec(node.getLeft(), callback, result);
+    this.#postOrderForEachRec(node.getRight(), callback, result);
+    result.push(callback(node));
+  }
+
   getRoot() {
     return this.#root;
   }
@@ -176,7 +215,7 @@ myTree.delete(10);
 prettyPrint(rootNode);
 
 console.log("searching: 5");
-console.log(`myTree.find(5)`);
+console.log(myTree.find(5));
 
 console.log("deleting: 5");
 myTree.delete(5);
@@ -184,5 +223,16 @@ myTree.delete(5);
 console.log("searching: 5");
 console.log(myTree.find(5));
 
+prettyPrint(rootNode);
+
 console.log("levelOrderForEach test:");
 console.log(myTree.levelOrderForEach((node) => node.getValue()));
+
+console.log("preOrderForEach test:");
+console.log(myTree.preOrderForEach((node) => node.getValue()));
+
+console.log("inOrderForEach test:");
+console.log(myTree.inOrderForEach((node) => node.getValue()));
+
+console.log("postOrderForEach test:");
+console.log(myTree.postOrderForEach((node) => node.getValue()));
