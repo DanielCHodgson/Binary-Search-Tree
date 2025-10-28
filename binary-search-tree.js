@@ -151,6 +151,54 @@ class Tree {
     node.setHeight(Math.max(leftHeight, rightHeight) + 1);
   }
 
+  depth(value) {
+    let node = this.#root;
+    let depth = 0;
+
+    while (node !== null) {
+      if (value === node.getValue()) return depth;
+      if (value < node.getValue()) {
+        node = node.getLeft();
+      } else {
+        node = node.getRight();
+      }
+      depth++;
+    }
+    return null;
+  }
+
+  isBalanced() {
+    return this.#isBalancedRec(this.#root);
+  }
+
+  #isBalancedRec(node) {
+    if (node === null) return true;
+
+    let leftHeight = -1;
+    let rightHeight = -1;
+
+    if (node.getLeft() !== null) leftHeight = node.getLeft().getHeight();
+    if (node.getRight() !== null) rightHeight = node.getRight().getHeight();
+
+    const heightDiff = Math.abs(leftHeight - rightHeight);
+
+    if (heightDiff > 1) {
+      return false;
+    }
+
+    return (
+      this.#isBalancedRec(node.getLeft()) &&
+      this.#isBalancedRec(node.getRight())
+    );
+  }
+
+  rebalance() {
+    const sorted = this.inOrderForEach(function (node) {
+      return node.getValue();
+    });
+    this.#root = this.buildTree(sorted);
+  }
+
   getRoot() {
     return this.#root;
   }
@@ -253,5 +301,26 @@ console.log(myTree.inOrderForEach((node) => node.getValue()));
 console.log("postOrderForEach test:");
 console.log(myTree.postOrderForEach((node) => node.getValue()));
 
-console.log("Height of 9: " + myTree.height(9))
-console.log("Height of 7: " + myTree.height(7))
+console.log("Height of 9: " + myTree.height(9));
+console.log("Height of 7: " + myTree.height(7));
+
+console.log("Depth of 9: " + myTree.depth(9));
+console.log("Depth of 7: " + myTree.depth(7));
+
+console.log("Is balanced:", myTree.isBalanced());
+
+console.log("Inserting: 50, 60, 70")
+myTree.insert(50);
+myTree.insert(60);
+myTree.insert(70);
+
+prettyPrint(myTree.getRoot());
+
+console.log("Is balanced after insertions:", myTree.isBalanced());
+
+
+console.log("Rebalancing")
+myTree.rebalance();
+
+console.log("Is balanced after rebalance:", myTree.isBalanced());
+prettyPrint(myTree.getRoot());
